@@ -23,8 +23,9 @@
       "target": {
         "type": "string",
         "title": "Target date & time",
-        "description": "ISO 8601, e.g. 2026-12-31T23:59:59. A future target counts down; a past one counts up. Include an offset (…Z or …+02:00) or set the time zone below.",
-        "x-widget": "text"
+        "description": "A future target counts down; a past one counts up. The value is read in the time zone below (or its own offset if you paste one in).",
+        "format": "date-time",
+        "x-widget": "datetime"
       },
       "tz": {
         "type": "string",
