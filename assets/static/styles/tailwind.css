@@ -9,12 +9,18 @@
    ========================================================================= */
 
 @import 'tailwindcss';
-/* Shared base (brand tokens + fluid root + the degraded-mode kill-switch) from
-   @screenly-labs/signage-kit. The app's own @theme + component styles below layer
-   on top; the design identity stays here, per-app. */
+/* Shared base (brand/font tokens + fluid root + the degraded-mode kill-switch),
+   the canonical @font-face set, the standardized footer badge, and the .stage
+   frame — all from @screenly-labs/signage-kit. The app's own @theme + component
+   styles below layer on top; the design identity stays here, per-app. */
 @import '@screenly-labs/signage-kit/styles/preset.css';
+@import '@screenly-labs/signage-kit/styles/fonts.css';
+@import '@screenly-labs/signage-kit/styles/brand.css';
+@import '@screenly-labs/signage-kit/styles/stage.css';
 
-/* Design tokens — also generate utilities (bg-ink, text-mint, font-display…). */
+/* Design tokens — also generate utilities (bg-ink, text-mint, font-display…).
+   --font-sans (Hanken Grotesk) comes from the kit preset; --font-display is
+   overridden to Bricolage Grotesque, this app's grotesque display face. */
 @theme {
   --color-ink: #0b0e13;
   --color-ink-deep: #05070b;
@@ -24,32 +30,16 @@
   --color-mint: #38e0b0;
   --color-panel: #131822;
   --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
-}
-
-/* Webfonts: self-hosted, vendored from Bun-managed @fontsource (sync-fonts.js).
-   Variable "standard" axis = optical-size + weight + width. */
-@font-face {
-  font-family: 'Bricolage Grotesque';
-  font-style: normal;
-  font-weight: 200 800;
-  font-display: swap;
-  src: url('/static/fonts/bricolage-grotesque-latin-standard-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Hanken Grotesk';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('/static/fonts/hanken-grotesk-latin-wght-normal.woff2') format('woff2');
 }
 
 @layer base {
-  /* One fluid root drives the whole scale; vw+vh keeps it orientation-neutral so
-     portrait and landscape resolve to the same type size. Children size in rem,
-     so the layout scales cleanly from 480px → 4K with no breakpoints. */
+  /* Tune the kit's fluid root (clamp of vw+vh) for this design; the clamp itself
+     lives in the preset. Children size in rem, so the layout scales cleanly from
+     480px → 4K, portrait and landscape, with no breakpoints. */
   :root {
-    font-size: clamp(16px, 1vw + 1vh, 54px);
+    --root-min: 16px;
+    --root-gain: 1;
+    --root-max: 54px;
   }
 
   body {
@@ -67,16 +57,6 @@
 }
 
 @layer components {
-  .stage {
-    position: relative;
-    display: grid;
-    place-items: center;
-    min-height: 100vh; /* fallback for engines below the svh floor (~2018 players) */
-    min-height: 100svh;
-    padding: clamp(1.5rem, 6vmin, 4rem);
-    overflow: hidden;
-  }
-
   .timer {
     position: relative;
     z-index: 1;
@@ -183,31 +163,6 @@
      event has arrived / passed. */
   :root[data-direction='up'] .unit__num {
     color: var(--color-mint);
-  }
-
-  /* Promotional Screenly badge, quiet in the corner. Removed on Screenly players
-     by main.ts (the viewer is already a customer). */
-  .brand {
-    position: fixed;
-    right: clamp(1rem, 3.2vmin, 2.4rem);
-    bottom: clamp(1rem, 3.2vmin, 2.4rem);
-    z-index: 2;
-    display: block;
-    opacity: 0.55;
-    transition: opacity 200ms ease;
-    border-radius: 4px;
-    outline-offset: 6px;
-  }
-
-  .brand:hover,
-  .brand:focus-visible {
-    opacity: 0.95;
-  }
-
-  .brand img {
-    display: block;
-    width: auto;
-    height: clamp(13px, 1.3rem, 26px);
   }
 }
 
