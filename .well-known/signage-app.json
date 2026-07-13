@@ -1,0 +1,48 @@
+{
+  "manifestVersion": "1",
+  "id": "timer",
+  "name": "Timer",
+  "description": "A full-screen countdown / count-up timer for digital signage. Ticks the days, hours, minutes and seconds to a target instant, then counts up the elapsed time once it passes — so the same screen handles a launch countdown or a \"days since\" board. Set an optional title, time zone, and a message shown when the target is reached. Everything arrives in the launch URL, so one deployment times any event.",
+  "summary": "Count down to — or up from — any moment.",
+  "vendor": "Screenly",
+  "tags": ["Countdown", "Clock", "Event"],
+  "homepage": "https://timer.srly.io/",
+  "source": "https://github.com/Screenly-Labs/timer",
+  "support": "https://github.com/Screenly-Labs/timer/issues",
+  "playback": { "pacing": "fixed" },
+  "settings": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "title": "Title",
+        "description": "Heading above the clock, e.g. Product Launch or Since Last Incident.",
+        "x-widget": "text"
+      },
+      "target": {
+        "type": "string",
+        "title": "Target date & time",
+        "description": "ISO 8601, e.g. 2026-12-31T23:59:59. A future target counts down; a past one counts up. Include an offset (…Z or …+02:00) or set the time zone below.",
+        "x-widget": "text"
+      },
+      "tz": {
+        "type": "string",
+        "title": "Time zone",
+        "description": "IANA time zone used to read a target without its own offset, e.g. Europe/London.",
+        "default": "",
+        "x-widget": "timezone"
+      },
+      "message": {
+        "type": "string",
+        "title": "Message at target",
+        "description": "Optional line shown once the target is reached, e.g. We're live!",
+        "x-widget": "text"
+      }
+    }
+  },
+  "launch": {
+    "baseUrl": "https://timer.srly.io/",
+    "template": "{?title,target,tz,message}"
+  }
+}
