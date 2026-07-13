@@ -62,11 +62,23 @@ if ((await tailwind.exited) !== 0) {
   console.error('✗ Tailwind build failed')
   process.exit(1)
 }
-await writeFile(cssOut, await processCss(await readFile(cssOut, 'utf8'), { flattenLayers: true, filename: cssOut }))
+try {
+  await writeFile(cssOut, await processCss(await readFile(cssOut, 'utf8'), { flattenLayers: true, filename: cssOut }))
+} catch (error) {
+  console.error(`✗ CSS build failed (${cssOut})`)
+  console.error(error)
+  process.exit(1)
+}
 console.log(`✓ CSS: ${cssOut}`)
 
 // 4. Client TS -> the kit's bundler (self-contained IIFE at the floor's syntax level).
-await bundleJs('assets/static/js/main.ts', `${DIST}/static/js/main.js`)
+try {
+  await bundleJs('assets/static/js/main.ts', `${DIST}/static/js/main.js`)
+} catch (error) {
+  console.error('✗ JS build failed')
+  console.error(error)
+  process.exit(1)
+}
 console.log(`✓ JS: ${DIST}/static/js/main.js`)
 
 // 5. Cache-busting: hash the built JS + CSS so the token changes exactly when
