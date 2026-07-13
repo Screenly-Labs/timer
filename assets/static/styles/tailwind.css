@@ -9,6 +9,10 @@
    ========================================================================= */
 
 @import 'tailwindcss';
+/* Shared base (brand tokens + fluid root + the degraded-mode kill-switch) from
+   @screenly-labs/signage-kit. The app's own @theme + component styles below layer
+   on top; the design identity stays here, per-app. */
+@import '@screenly-labs/signage-kit/styles/preset.css';
 
 /* Design tokens — also generate utilities (bg-ink, text-mint, font-display…). */
 @theme {
@@ -228,13 +232,9 @@
 }
 
 /* =========================================================================
-   Degraded mode — old/weak signage players (html.legacy set by the inline gate
-   in index.html). Assume the device can't afford animation; drop it entirely.
+   Degraded mode — old/weak signage players (html.legacy set by the shared gate).
+   The generic kill-switch (drops animation/transition/will-change) now comes from
+   the kit's preset, imported above. The clock ticks in JS and the only CSS motion
+   is the one-off .timer entrance, which the kill-switch already disables — there's
+   no animated resting state to hold, so this app needs no extra html.legacy rule.
    ========================================================================= */
-html.legacy *,
-html.legacy *::before,
-html.legacy *::after {
-  animation: none !important;
-  transition: none !important;
-  will-change: auto !important;
-}
