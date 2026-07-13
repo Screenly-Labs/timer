@@ -2,6 +2,10 @@
 // classic script with no exports, so it loads from a plain <script>. Keep it
 // export-free and free of top-level await.
 
+// Side-effect import: installs the replaceChildren shim for the older-browser
+// degraded mode. Must stay first so the shim is in place before any render.
+import './polyfills'
+
 import { computeState, pad2, parseTarget } from './timer'
 
 // Shown when the page is opened with no settings (e.g. the store preview or a
