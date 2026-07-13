@@ -26,6 +26,14 @@ const setLine = (id: string, value: string): void => {
   el.hidden = value.length === 0
 }
 
+// Send a GA4 event via the gtag stub in index.html. Guarded so the app keeps
+// working when Analytics is blocked, offline, or absent (common on signage).
+type Gtag = (...args: unknown[]) => void
+const track = (event: string, params: Record<string, unknown>): void => {
+  const gtag = (window as unknown as { gtag?: Gtag }).gtag
+  if (typeof gtag === 'function') gtag('event', event, params)
+}
+
 // Human-readable target datetime for the sub-line, rendered in the chosen zone.
 const formatTarget = (targetMs: number, tz: string): string => {
   try {
@@ -86,6 +94,12 @@ const render = (): void => {
   document.documentElement.dataset.state = targetMs === null ? 'invalid' : 'ready'
   if (targetMs === null) {
     setLine('target-line', 'Set a target date to start the timer.')
+  } else {
+    // Report once per load whether this timer is counting down to a future
+    // target or up from a past one — the page reloads periodically, so each
+    // load re-reports the current mode.
+    const { direction } = computeState(targetMs, Date.now())
+    track('timer_direction', { direction: direction === 'down' ? 'countdown' : 'countup' })
   }
   setLine('message', '')
   // paint() fills the target line and digits for a valid target and keeps them
