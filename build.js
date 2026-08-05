@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 /* global Bun */
 // Builds the static site into ./dist for GitHub Pages. Like the Quotes and
-// Opening Hours apps this is a plain static bundle — no server. The timer has no
+// Opening Hours apps this is a plain static bundle, no server. The timer has no
 // dataset: the title and target arrive entirely in the launch URL's query string
 // (see the manifest at .well-known/signage-app.json), and the clock ticks live in
 // the browser. Steps:

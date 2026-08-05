@@ -1,7 +1,7 @@
 # Screenly Timer App
 
 A full-screen **countdown / count-up** timer for digital signage. It ticks the
-days, hours, minutes and seconds to a target instant — then keeps going and
+days, hours, minutes and seconds to a target instant, then keeps going and
 counts **up** the elapsed time once the target passes. The same screen handles a
 launch countdown *and* a "days since" board. Big tabular Bricolage Grotesque
 numerals over a graphite ground with a single mint accent.
@@ -12,7 +12,7 @@ Live: **https://timer.srly.io**
 
 Part of the Screenly signage family alongside the [quotes](../quotes),
 [opening-hours](../opening-hours) and [world-clock](../world-clock) apps. Like
-Quotes, this is a fully **static** site hosted on **GitHub Pages** — there's no
+Quotes, this is a fully **static** site hosted on **GitHub Pages**; there's no
 server; the clock ticks entirely in the browser. Like Opening Hours it takes
 **settings**: the target arrives in the launch URL's query string, so one
 deployment times any event.
@@ -33,7 +33,7 @@ https://timer.srly.io/?title=Product+Launch&target=2026-12-31T23:59:59&tz=Europe
 | `message` | Optional line shown once the target is reached (during count-up), e.g. `Happy New Year!`. |
 
 Opened with no parameters (e.g. the store preview), it counts down to a worked
-example so the screen is never blank. There's no data to refresh — it's a single
+example so the screen is never blank. There's no data to refresh; it's a single
 self-ticking page.
 
 ## Direction is automatic
@@ -67,7 +67,7 @@ Requires [Bun](https://bun.sh). Never npm/npx.
 bun install     # deps; vendored fonts come from @fontsource via sync-fonts
 bun run dev     # build + serve dist/ locally
 bun run build   # assemble dist/ for GitHub Pages
-bun test        # bun:test — date math + manifest validation
+bun test        # bun:test for date math + manifest validation
 bun run typecheck
 bun run lint
 ```
@@ -80,9 +80,11 @@ bun run lint
 write `CNAME` (`timer.srly.io`). `dist/` is gitignored and is the artifact GitHub
 Pages publishes.
 
-Push to **`master`** and `.github/workflows/deploy-pages.yml` builds and deploys
-to Pages. Pull requests run `ci.yml` (typecheck + lint + test + build). Action
-versions are SHA-pinned.
+Deploys are **tag-driven**: pushing a CalVer tag (`YYYY.M.PATCH`, e.g.
+`2026.8.0`) runs `.github/workflows/deploy-pages.yml`, which builds and deploys
+to Pages; it also accepts `workflow_dispatch`. Pushing to **`master`** on its own
+does **not** deploy. Pull requests run `ci.yml` (typecheck + lint + test +
+build). Action versions are SHA-pinned.
 
 ## Licence
 

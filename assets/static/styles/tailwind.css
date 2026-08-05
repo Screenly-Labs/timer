@@ -1,24 +1,24 @@
 /* =========================================================================
-   Screenly Timer App — "Countdown"
-   Big ticking days / hours / minutes / seconds counting down to — or up from —
+   Screenly Timer App: "Countdown"
+   Big ticking days / hours / minutes / seconds counting down to, or up from,
    a target instant, set in a tabular Bricolage Grotesque over a graphite ground
    with a single mint accent. The clock is the hero: four labelled numerals on a
    row, an event title above and the target date below. Tuned for unattended
-   signage — legible at distance, no interaction, both orientations. The seconds
+   signage: legible at distance, no interaction, both orientations. The seconds
    flip is the only motion, so there's nothing to gate for reduced-motion.
    ========================================================================= */
 
 @import 'tailwindcss';
 /* Shared base (brand/font tokens + fluid root + the degraded-mode kill-switch),
    the canonical @font-face set, the standardized footer badge, and the .stage
-   frame — all from @screenly-labs/signage-kit. The app's own @theme + component
+   frame, all from @screenly-labs/signage-kit. The app's own @theme + component
    styles below layer on top; the design identity stays here, per-app. */
 @import '@screenly-labs/signage-kit/styles/preset.css';
 @import '@screenly-labs/signage-kit/styles/fonts.css';
 @import '@screenly-labs/signage-kit/styles/brand.css';
 @import '@screenly-labs/signage-kit/styles/stage.css';
 
-/* Design tokens — also generate utilities (bg-ink, text-mint, font-display…).
+/* Design tokens; also generate utilities (bg-ink, text-mint, font-display…).
    --font-sans (Hanken Grotesk) comes from the kit preset; --font-display is
    overridden to Bricolage Grotesque, this app's grotesque display face. */
 @theme {
@@ -187,9 +187,9 @@
 }
 
 /* =========================================================================
-   Degraded mode — old/weak signage players (html.legacy set by the shared gate).
+   Degraded mode: old/weak signage players (html.legacy set by the shared gate).
    The generic kill-switch (drops animation/transition/will-change) now comes from
    the kit's preset, imported above. The clock ticks in JS and the only CSS motion
-   is the one-off .timer entrance, which the kill-switch already disables — there's
+   is the one-off .timer entrance, which the kill-switch already disables, so there's
    no animated resting state to hold, so this app needs no extra html.legacy rule.
    ========================================================================= */
