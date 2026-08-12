@@ -5,7 +5,9 @@
 // Side-effect import: installs the replaceChildren shim for the older-browser
 // degraded mode. Must stay first so the shim is in place before any render.
 import '@screenly-labs/signage-kit/polyfills'
+import { trackPlayer } from '@screenly-labs/signage-kit/analytics'
 import { removeScreenlyBranding } from '@screenly-labs/signage-kit/branding'
+import { detectPlayer } from '@screenly-labs/signage-kit/profiler'
 
 import { computeState, pad2, parseTarget } from './timer'
 
@@ -108,8 +110,21 @@ const render = (): void => {
   scheduleTick()
 }
 
+// How this screen is configured, for the telemetry. `direction` is the timer's whole
+// point, so a census that says "1,200 BrightSigns" without it cannot tell a launch
+// countdown from a "days since" board. `none` is its own value rather than an omission,
+// so a screen deployed with no target at all is visible instead of missing.
+const timerConfig = (): { direction: string } => {
+  if (targetMs === null) return { direction: 'none' }
+  return { direction: computeState(targetMs, Date.now()).direction === 'down' ? 'countdown' : 'countup' }
+}
+
 const init = (): void => {
   removeScreenlyBranding()
+  // Report which player is showing this, and how it is set up. A static app can only
+  // profile from the user agent and referrer; the Worker apps additionally read
+  // X-Requested-With, the only signal that names an Android WebView vendor.
+  trackPlayer(detectPlayer(), { app: 'timer', config: timerConfig() })
   render()
 }
 
