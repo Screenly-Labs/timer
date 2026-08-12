@@ -2,7 +2,7 @@
 // they can be unit-tested with `bun:test`; main.ts is the (untestable, no-exports)
 // browser entry that wires these into the DOM and ticks the clock.
 //
-// The app takes no dataset — a single timer is described entirely by the launch
+// The app takes no dataset; a single timer is described entirely by the launch
 // URL's query string (see .well-known/signage-app.json): a target instant, plus
 // an optional title, time zone, and message. Direction is automatic: a future
 // target counts down; once it passes (or a past target) it counts up the elapsed
@@ -44,7 +44,7 @@ export const computeState = (targetMs: number, nowMs: number): TimerState => {
   }
 }
 
-// The offset, in ms, of a named IANA time zone at a given instant — i.e. how far
+// The offset, in ms, of a named IANA time zone at a given instant, i.e. how far
 // that zone's wall-clock is ahead of UTC (e.g. +3600000 for CET in winter). Uses
 // the Intl tz database, which is always available, so results don't depend on the
 // host's local zone. Returns 0 for an unknown/empty zone (treated as UTC).

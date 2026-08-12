@@ -61,7 +61,7 @@ const targetLabel = targetMs === null ? '' : formatTarget(targetMs, tz)
 
 document.title = title === 'Countdown' ? 'Timer' : `${title} | Timer`
 
-// Paint one frame from the current clock. Returns nothing — it's called on a
+// Paint one frame from the current clock. Returns nothing; it's called on a
 // timer. When the target can't be parsed we show a dashed placeholder and stop.
 const paint = (): void => {
   if (targetMs === null) {
@@ -97,7 +97,7 @@ const render = (): void => {
     setLine('target-line', 'Set a target date to start the timer.')
   } else {
     // Report once per load whether this timer is counting down to a future
-    // target or up from a past one — the page reloads periodically, so each
+    // target or up from a past one; the page reloads periodically, so each
     // load re-reports the current mode.
     const { direction } = computeState(targetMs, Date.now())
     track('timer_direction', { direction: direction === 'down' ? 'countdown' : 'countup' })

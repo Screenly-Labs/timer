@@ -12,14 +12,14 @@ settings apps). There is **no server**; the clock ticks entirely in the browser.
 
 Like Opening Hours, this is a **settings** app: the target isn't baked in, it
 arrives in the launch URL's query string (`?title=…&target=…&tz=…&message=…`).
-**Direction is automatic** — a future target counts down, a past one counts up;
+**Direction is automatic**: a future target counts down, a past one counts up;
 there is no mode setting. Single self-ticking page (a `setTimeout` loop aligned
 to the wall-clock second); the player reloads on its own schedule.
 
 ## Stack & conventions
 
 - **Bun** for everything (package manager, bundler, test runner). Use `bun` /
-  `bunx` — never npm/npx.
+  `bunx`, never npm/npx.
 - **TypeScript**, strict. All browser JS is authored as `.ts` and bundled by Bun.
 - **Tailwind CSS v4**, CSS-first: tokens live in `@theme` in
   `assets/static/styles/tailwind.css`; compiled by `@tailwindcss/cli` at build.
@@ -32,7 +32,7 @@ to the wall-clock second); the player reloads on its own schedule.
 bun install         # deps; vendored fonts come from @fontsource via sync-fonts
 bun run dev         # build + serve dist/ locally
 bun run build       # assemble dist/ (see below)
-bun test            # bun:test — date math + manifest validation
+bun test            # bun:test for date math + manifest validation
 bun run typecheck   # tsc --noEmit
 bun run lint        # biome lint --error-on-warnings
 ```
@@ -42,17 +42,17 @@ bun run lint        # biome lint --error-on-warnings
 Web root is served from the site root (custom domain), so assets are referenced
 absolutely as `/static/...`.
 
-- `index.html` — the page shell. Ships a worked example inline (New Year) so the
+- `index.html`: the page shell. Ships a worked example inline (New Year) so the
   screen is never blank pre-JS or in the store preview. Asset URLs carry
   `?v=__ASSET_VERSION__`, replaced at build.
-- `assets/static/js/timer.ts` — **pure, exported, unit-tested** helpers and types
+- `assets/static/js/timer.ts`: **pure, exported, unit-tested** helpers and types
   (`parseTarget`, `tzOffsetMs`, `computeState`, `splitDuration`, `pad2`). This is
   where the date/time-zone math lives; keep it framework-free and side-effect-free.
-- `assets/static/js/main.ts` — the browser **entry**. Reads the query string,
+- `assets/static/js/main.ts`: the browser **entry**. Reads the query string,
   resolves the target once, and ticks the four units + direction + target line +
   message on a second-aligned loop. Keep it **export-free** and free of top-level
   `await`.
-- `.well-known/signage-app.json` — the app-store manifest (settings schema +
+- `.well-known/signage-app.json`: the app-store manifest (settings schema +
   launch template). `test/manifest.test.ts` validates it.
 
 `build.js` builds into `dist/` **without mutating sources**: vendor fonts → copy
@@ -69,9 +69,9 @@ minify the TS → stamp a sha256 content hash into `?v=` URLs → write `CNAME`
   two-pass `tzOffsetMs` (via `Intl` tz data) that stays correct across DST.
 
 `tzOffsetMs` uses `Intl.DateTimeFormat` with an explicit `timeZone`, so results
-don't depend on the host's local zone — the unit tests assert exact UTC instants.
+don't depend on the host's local zone; the unit tests assert exact UTC instants.
 
-## Design — "Countdown"
+## Design: "Countdown"
 
 Big tabular Bricolage Grotesque numerals over a graphite ground with one mint
 accent; four labelled units on a row (wrapping to 2×2 when narrow), the title
@@ -93,6 +93,8 @@ reduced-motion gating beyond the one-off entrance.
 
 ## Deploy
 
-Push to **`master`** → `.github/workflows/deploy-pages.yml` builds and publishes
-to Pages. PRs run `ci.yml` (typecheck + lint + test + build). Action versions are
-SHA-pinned.
+Deploys are **tag-driven**: pushing a CalVer tag (`YYYY.M.PATCH`, e.g.
+`2026.8.0`) runs `.github/workflows/deploy-pages.yml`, which builds and publishes
+to Pages; it also accepts `workflow_dispatch`. Pushing to `master` on its own
+does **not** deploy. PRs run `ci.yml` (typecheck + lint + test + build). Action
+versions are SHA-pinned.
