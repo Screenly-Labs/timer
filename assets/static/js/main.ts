@@ -124,7 +124,8 @@ const init = (): void => {
   // Report which player is showing this, and how it is set up. A static app can only
   // profile from the user agent and referrer; the Worker apps additionally read
   // X-Requested-With, the only signal that names an Android WebView vendor.
-  trackPlayer(detectPlayer(), { app: 'timer', config: timerConfig() })
+  trackPlayer(detectPlayer(), { app: 'timer', sendPageView: true,
+    config: timerConfig() })
   render()
 }
 
